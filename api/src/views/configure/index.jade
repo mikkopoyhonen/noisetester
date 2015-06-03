@@ -1,0 +1,37 @@
+
+extends ../layout
+
+block content
+
+  h1 Configure
+
+  div
+    form(role='form' method='PUT' class='form-horizontal' id="configureform")
+      div(class='form-group')
+        label(class='control-label col-sm-2') Loss (%)
+        div(class='col-sm-10')
+          input(type='number' name='loss') 
+
+      div(class='form-group')
+        label(class='control-label col-sm-2') Delay (ms)
+        div(class='col-sm-10')
+          input(type='number' name='delay')
+
+      div(class='form-group')
+        label(class='control-label col-sm-2') + / -
+        div(class='col-sm-10')
+          input(type='number' name='delayvariance')
+
+      div(class='form-group')
+        label(class='control-label col-sm-2') Jitter
+        div(class='col-sm-10')
+          input(type='checkbox' name='jitter' value='1')
+
+          select(name='distribution')
+            option(value='normal') Normal
+            option(value='pareto') Pareto
+            option(value='paretonormal') Paretonormal          
+
+      div(class='form-group')
+        div(class='col-sm-10')
+          input(class='btn btn-default' type='button' onclick='ajaxRequest("PUT", "/limit", "configureform")' value='Set')

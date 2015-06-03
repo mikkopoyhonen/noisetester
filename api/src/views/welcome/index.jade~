@@ -1,0 +1,11 @@
+
+extends ../layout
+
+block content
+  h1 Welcome
+  div
+      p This is noise API frontpage
+      p
+        code Running at: #{host} 
+      p
+        a(class='btn btn-primary btn-lg' href='http://noise.n4sjamk.org') Go to Contriboard
