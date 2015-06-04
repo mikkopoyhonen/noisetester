@@ -6,7 +6,7 @@ var bodyParser      = require('body-parser');
 var cookieParser    = require('cookie-parser');
 
 // Constants
-var PORT = 8002;
+var PORT = 8003;
 
 // App
 var app = express();
@@ -27,12 +27,16 @@ app.get('/gui/welcome', function (req, res) {
     res.render('welcome');
 });
 
-app.get('/gui/configure', function (req, res) {
-    res.render('configure');
+app.get('/gui/config/manual', function (req, res) {
+    res.render('config_manual');
 });
 
 app.get('/gui/target', function (req, res) {
     res.render('target');
+});
+
+app.get('/gui/config/script', function (req, res) {
+    res.render('config_script');
 });
 
 app.locals.limit = {
@@ -98,6 +102,10 @@ app.put('/target', function (req, res) {
 
     var status = shell.exec('sudo service haproxy restart', {silent:true}).output;
     res.json(status);
+});
+
+app.put('/script', function(req, res){
+    res.send(400);
 });
 
 app.listen(PORT);

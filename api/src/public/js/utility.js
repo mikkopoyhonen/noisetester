@@ -2,7 +2,7 @@ function ajaxRequest(method, url, formid){
       $.ajax({
       type: method,
       contentType: "application/json",
-      url: 'http://localhost:8002' + url,
+      url: url,
       data: JSON.stringify(getFormData($("#"+formid))),
       dataType: "json",
       beforeSend: function(){
