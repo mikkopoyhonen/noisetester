@@ -11,7 +11,7 @@ This will build a new dockerimage from this repository, remove the old one and s
 
 ####Next
 `sh enviroment_variables.sh`
-This will connect to your local vagrant install via SSH and set the `Contriboard-client` enviroment variables to use the `contriboard-noise` haproxy so you will be able to delay some trafic.
+This will give you a command string to be pasted to your vagrant gulp task bash window.
 
 ####Then 
 Go to `http://localhost:8002/`
