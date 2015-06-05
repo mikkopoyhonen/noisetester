@@ -83,12 +83,13 @@ function setLimit(json){
     else if (app.locals.limit.delayvariance != '') {
         command += app.locals.limit.delayvariance + 'ms ';
     }
-    if(parseInt(json.jitter) === 1){
+    if(json.jitter){
         command += 'distribution ' + json.distribution;
     }
     if (command != 'sudo tc qdisc change dev lo root netem ') {
         shell.exec(command, {silent:true});
     }
+    console.log(command);
 }
 
 app.put('/limit', function (req, res) {
@@ -124,6 +125,7 @@ app.put('/script', function(req, res){
     console.log('New script with timers at: ' +seconds.toString());
     seconds.forEach(function(i){
         timeouts.push(setTimeout(function(){
+            console.log('');
             console.log('Delayed limit trigger ' + i + ' seconds');
             setLimit(jsonscript[i]);
         },i*1000));
