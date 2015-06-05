@@ -10,7 +10,7 @@ var http            = require('http-request');
 var timeouts = [];
 
 // Constants
-var PORT = 8003;
+var PORT = 8002;
 
 // App
 var app = express();
