@@ -28,3 +28,45 @@ block content
           |   "delay": 2
           |  }
           | }
+
+  p Command description
+    div(class='well')
+      p
+        b limit
+        br
+        | (packet amount) Limits the effect of selected options to the indicated number of next packets.
+
+      p
+        b delay
+        br
+        | (milliseconds) Delay packet traffic by set amount.
+
+      p
+        b delayvariance
+        br
+        | (milliseconds) REQUIRES delay. Optional parameter for delay which introduces a delay variation.
+
+      p
+        b corrupt
+        br 
+        | (percent) Allows the emulation of random noise introducing an error in a random position for a chosen percent of packets.
+
+      p
+        b duplicate
+        br
+        | (percent) Duplicates the chosen percent of packets before queuing them.
+
+      p
+        b loss
+        br
+        | (percent) Adds an independent loss probability to the packets outgoing from the chosen network interface.
+
+      p
+        b reorder
+        br
+        | (percent) REQUIRES delay. Set percent of packets are sent immediately, while others are delayed by set delay time
+
+      p
+        b rate
+        br
+        | (bits) Delay packets based on packet size.

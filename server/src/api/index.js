@@ -48,7 +48,7 @@ function setLimit(json){
     }
 
     /*Don't execute unless the user has inputted a value for delay*/
-    if (json.delayvariance != "" && json.delay != "") {
+    if (json.delayvariance && json.delay != "") {
         app.locals.limit.delayvariance = json.delayvariance;
         command += json.delayvariance + 'ms ';
     }
@@ -106,9 +106,10 @@ function setLimit(json){
     }
 
     if (command != 'sudo tc qdisc change dev lo root netem ') {
-        shell.exec(command, {silent:true});
+        var out = shell.exec(command, {silent:true}).output;
     }
     console.log(command);
+    console.log(out);
 }
     
     app.put('/limit', function (req, res) {
