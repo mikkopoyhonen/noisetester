@@ -12,10 +12,10 @@ RUN ln -s /usr/bin/nodejs /usr/bin/node
 
 COPY /haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg
 
-COPY /api /api
-RUN cd /api/src;npm install
+COPY /server /server
+RUN cd /server/src;npm install
 
 EXPOSE 8001
 EXPOSE 8002
 
-CMD sudo service haproxy restart && sudo tc qdisc add dev lo root netem loss 0% delay 0ms && node /api/src/index.js
+CMD sudo service haproxy restart && sudo tc qdisc add dev lo root netem loss 0% delay 0ms && node /server/src/index.js
