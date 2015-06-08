@@ -135,20 +135,35 @@ function setLimit(json){
     
     // Timers
     var timeouts = [];
+    var loopouts = [];
     app.put('/script', function(req, res){
         for (var i = 0; i < timeouts.length; i++) {
           clearTimeout(timeouts[i]);
         }
+
+        for (var z = 0; z < loopouts.length; z++) {
+          clearInterval(loopouts[z]);
+        }
+
         timeouts = [];
-    
+        loopouts = [];
+        var loop = req.body.loop;
         var jsonscript = JSON.parse(req.body.jsonscript);
         var seconds = Object.keys(jsonscript);
+        console.log('loop:' +loop);
         console.log('New script with timers at: ' +seconds.toString());
         seconds.forEach(function(i){
             timeouts.push(setTimeout(function(){
                 console.log('');
-                console.log('['+i+' sec] Delayed trigger fired');
+                console.log('[S]['+i+' sec] Delayed trigger fired');
                 setLimit(jsonscript[i]);
+                if(loop){
+                    loopouts.push(setInterval(function(){
+                        console.log('');
+                        console.log('[L]['+i+' sec] Delayed trigger fired');
+                        setLimit(jsonscript[i]);
+                        },1000*Math.max.apply(Math,seconds)));
+                }
             },i*1000));
         });
         res.json('New script with timers at: ' + seconds.toString());
