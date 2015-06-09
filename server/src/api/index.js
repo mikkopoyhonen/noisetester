@@ -111,9 +111,30 @@ function setLimit(json){
     console.log(command);
     console.log(out);
 }
+
+function resetLimit() {
+    var command = 'sudo tc qdisc change dev lo root netem limit 1000 delay 0ms 0ms corrupt 0% duplicate 0% reorder 0% loss 0% rate 0bit';
+
+    app.locals.limit.limit = '';
+    app.locals.limit.loss = '';
+    app.locals.limit.delay = '';
+    app.locals.limit.delayvariance = '';
+    app.locals.limit.duplicate = '';
+    app.locals.limit.corrupt = '';
+    app.locals.limit.reorder = '';
+    app.locals.limit.rate = '';
+
+    shell.exec(command, {silent:true});
+}
     
     app.put('/limit', function (req, res) {
         setLimit(req.body);
+        var status = shell.exec('sudo tc qdisc show', {silent:true}).output;
+        res.json(status);
+    });
+
+    app.put('/limit/reset', function(req, res) {
+        resetLimit();
         var status = shell.exec('sudo tc qdisc show', {silent:true}).output;
         res.json(status);
     });
