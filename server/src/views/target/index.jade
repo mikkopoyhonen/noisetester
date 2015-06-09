@@ -10,18 +10,21 @@ block content
       div(class='form-group')
         label(class='control-label col-sm-2') CB Client
         div(class='col-sm-10')
-          input(type='text' name='clienturl')
+          input(type='text' name='clienturl' value=':8000')
 
       div(class='form-group')
         label(class='control-label col-sm-2') CB API
         div(class='col-sm-10')
-          input(type='text' name='apiurl')
+          input(type='text' name='apiurl' value=':9002')
 
       div(class='form-group')
         label(class='control-label col-sm-2') CB IO
         div(class='col-sm-10')
-          input(type='text' name='iourl')
+          input(type='text' name='iourl' value=':9001')
 
       div(class='form-group')
         div(class='col-sm-10')
           input(class='btn btn-default' type='button' onclick='ajaxRequest("PUT", "/target", "configureform")' value='Set')
+
+      div(class='well well-sm')
+        p This should be your external IP address with port. Check: 'hostname -I'.
