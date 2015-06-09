@@ -13,7 +13,7 @@ RUN ln -s /usr/bin/nodejs /usr/bin/node
 COPY /haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg
 
 COPY /server /server
-RUN cd /server/src;npm install
+RUN cd /server;npm install
 
 EXPOSE 8001
 EXPOSE 8002
