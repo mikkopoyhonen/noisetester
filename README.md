@@ -17,7 +17,7 @@ First make sure that you have started contriboard-api and contriboard-io at your
 `sh noise_start_contriboard.sh`
 This will connect to your vagrant via ssh and kill old contriboard nodejs process and start a new one with correct enviroment variables. 
 
-_Note: You may need to edit `start_contriboard.sh` in case your network interface is something else than eth0!_
+_Note: You may need to edit `noise_start_contriboard.sh` in case your network interface is something else than eth0!_
 
 ####Configure the targets
 Access the management GUI at: `http://localhost:8002`
