@@ -1,64 +1,26 @@
 module.exports = function(app){
     var shell = require('shelljs');
 
-    app.locals.limit = {
-        limit: '',
-        loss: '',
-        delay: '',
-        delayvariance: '',
-        duplicate: '',
-        corrupt: '',
-        reorder: '',
-        rate: ''
-    }
-
     // Timers
     var timeouts = [];
     var loopouts = [];
 
 function setLimit(json){
-    console.log(json);
     var command = 'sudo tc qdisc change dev lo root netem ';
-    /*When the user has NOT inputted any values to any of the fields in configure - index.jade
-    let's assume that they want to clear their loss and delay, and reset the lingering variables*/
-    if (json.loss == "" && json.delay == "" && json.delayvariance == "" 
-        && json.duplicate == "" && json.limit == "" && json.corrupt == ""
-        && json.reorder == "" && json.rate == "") {
-        app.locals.limit.limit = '';
-        app.locals.limit.loss = '';
-        app.locals.limit.delay = '';
-        app.locals.limit.delayvariance = '';
-        app.locals.limit.duplicate = '';
-        app.locals.limit.corrupt = '';
-        app.locals.limit.reorder = '';
-        app.locals.limit.rate = '';
-    }
 
     /*Do not allow negative delay values*/
     if (json.limit != "" && json.limit >= 0) {
-        app.locals.limit.limit = json.limit;
         command += 'limit ' + json.limit + ' ';
-    }
-    else if (app.locals.limit.limit != '') {
-        command += 'limit ' + app.locals.limit.limit + ' ';
     }
 
     /*Do not allow negative delay values*/
     if (json.delay != "" && json.delay >= 0) {
-        app.locals.limit.delay = json.delay;
         command += 'delay ' + json.delay + 'ms ';
-    }
-    else if (app.locals.limit.delay != '') {
-        command += 'delay ' + app.locals.limit.delay + 'ms ';
     }
 
     /*Don't execute unless the user has inputted a value for delay*/
     if (json.delayvariance && json.delay != "") {
-        app.locals.limit.delayvariance = json.delayvariance;
         command += json.delayvariance + 'ms ';
-    }
-    else if (app.locals.limit.delayvariance != '') {
-        command += app.locals.limit.delayvariance + 'ms ';
     }
 
     if(parseInt(json.jitter) === 1){
@@ -67,72 +29,41 @@ function setLimit(json){
 
     /*Do not allow loss-values over 100% or under 0%*/
     if (json.loss != "" && json.loss >= 0 && json.loss <= 100) {
-        app.locals.limit.loss = json.loss;
         command += 'loss ' + json.loss + '% ';
-    }
-    else if (app.locals.limit.loss != '') {
-        command += 'loss ' + app.locals.limit.loss + '% ';
     }
 
     /*Do not allow loss-values over 100% or under 0%*/
     if (json.duplicate != "" && json.duplicate >= 0 && json.duplicate <= 100) {
-        app.locals.limit.duplicate = json.duplicate;
         command += 'duplicate ' + json.duplicate + '% ';
-    }
-    else if (app.locals.limit.duplicate != '') {
-        command += 'duplicate ' + app.locals.limit.duplicate + '% ';
     }
 
     /*Do not allow loss-values over 100% or under 0%*/
     if (json.reorder != "" && json.reorder >= 0 && json.reorder <= 100) {
-        app.locals.limit.reorder = json.reorder;
         command += 'reorder ' + json.reorder + '% ';
-    }
-    else if (app.locals.limit.reorder != '') {
-        command += 'reorder ' + app.locals.limit.reorder + '% ';
     }
 
     /*Do not allow loss-values over 100% or under 0%*/
     if (json.corrupt != "" && json.corrupt >= 0 && json.corrupt <= 100) {
-        app.locals.limit.corrupt = json.corrupt;
         command += 'corrupt ' + json.corrupt + '% ';
-    }
-    else if (app.locals.limit.corrupt != '') {
-        command += 'corrupt ' + app.locals.limit.corrupt + '% ';
     }
 
     /*Do not allow negative delay values*/
     if (json.rate != "" && json.rate >= 0) {
-        app.locals.limit.rate = json.rate;
         command += 'rate ' + json.rate + 'bit ';
-    }
-    else if (app.locals.limit.rate != '') {
-        command += 'rate ' + app.locals.limit.rate + 'bit ';
     }
 
     if (command != 'sudo tc qdisc change dev lo root netem ') {
-        var out = shell.exec(command, {silent:true}).output;
+        shell.exec(command, {silent:true});
     }
-    console.log(command);
-    console.log(out);
 }
 
 function resetLimit() {
     var command = 'sudo tc qdisc change dev lo root netem limit 1000 delay 0ms 0ms corrupt 0% duplicate 0% reorder 0% loss 0% rate 0bit';
-
-    app.locals.limit.limit = '';
-    app.locals.limit.loss = '';
-    app.locals.limit.delay = '';
-    app.locals.limit.delayvariance = '';
-    app.locals.limit.duplicate = '';
-    app.locals.limit.corrupt = '';
-    app.locals.limit.reorder = '';
-    app.locals.limit.rate = '';
-
     shell.exec(command, {silent:true});
 }
     
     app.put('/limit', function (req, res) {
+        resetLimit();
         setLimit(req.body);
         var status = shell.exec('sudo tc qdisc show', {silent:true}).output;
         res.json(status);
