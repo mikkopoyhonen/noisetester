@@ -1,15 +1,20 @@
 module.exports = function(app){
     var shell = require('shelljs');
-   app.locals.limit = {
-    limit: '',
-    loss: '',
-    delay: '',
-    delayvariance: '',
-    duplicate: '',
-    corrupt: '',
-    reorder: '',
-    rate: ''
-}
+
+    app.locals.limit = {
+        limit: '',
+        loss: '',
+        delay: '',
+        delayvariance: '',
+        duplicate: '',
+        corrupt: '',
+        reorder: '',
+        rate: ''
+    }
+
+    // Timers
+    var timeouts = [];
+    var loopouts = [];
 
 function setLimit(json){
     console.log(json);
@@ -134,6 +139,15 @@ function resetLimit() {
     });
 
     app.put('/limit/reset', function(req, res) {
+        for (var i = 0; i < timeouts.length; i++) {
+          clearTimeout(timeouts[i]);
+        }
+
+        for (var z = 0; z < loopouts.length; z++) {
+          clearInterval(loopouts[z]);
+        }
+        timeouts = [];
+        loopouts = [];
         resetLimit();
         var status = shell.exec('sudo tc qdisc show', {silent:true}).output;
         res.json(status);
@@ -155,9 +169,6 @@ function resetLimit() {
         res.json(status);
     });
     
-    // Timers
-    var timeouts = [];
-    var loopouts = [];
     app.put('/script', function(req, res){
         for (var i = 0; i < timeouts.length; i++) {
           clearTimeout(timeouts[i]);
