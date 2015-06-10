@@ -5,7 +5,7 @@ Noise tester for Contriboard. The tool will generate configurable network condit
 If you dont yet have docker installed to your machine run:
 `sh install_docker.sh`
 
-####Build the
+####Build the docker container
 `sh build_remove_run.sh` 
 This will build a new dockerimage from this repository, remove the old one and start up a new fresh docker container. 
 
