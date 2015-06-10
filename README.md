@@ -1,31 +1,112 @@
 # contriboard-noise
-Noise tester for Contriboard
+Noise tester for Contriboard. The tool will generate configurable network condition and so emulate a bad network connection. This repository will build a docker container that will run a small express web server with management gui and api. The docker container also has a haxproxy to redirect trafic.
 
-##HOWTO
+####Install docker
 If you dont yet have docker installed to your machine run:
 `sh install_docker.sh`
 
-####Then run
+####Build the
 `sh build_remove_run.sh` 
-This will build a new dockerimage from this repository, remove the old one and start up a new fresh docker container.
+This will build a new dockerimage from this repository, remove the old one and start up a new fresh docker container. 
 
-####Next
+To use different set of ports, you can modify the `build_remove_run.sh` file and change the first parts of -p parameter. For example if you want that you can access your contriboard in port 5000 instead of 80, you  can change the `-p 80:8001` to `-p 5300:8001`.
+
+####Start contriboard with custom enviroment variables
 `sh start_contriboard.sh`
-This will connect to your vagrant via ssh and kill old contriboard nodejs process and start a new one with correct enviroment variables.
+This will connect to your vagrant via ssh and kill old contriboard nodejs process and start a new one with correct enviroment variables. 
 
-####Then 
-Go to `http://localhost:8002/`
+_Note: You may need to edit `start_contriboard.sh` in case your network interface is something else than eth0!_
 
-Click on `Set targets` and set the URL:s where you want the trafic to be delayed to.
+####Configure the targets
+Access the management GUI at: `http://localhost:8002`
+
+Click on `Set targets` and set the URL:s where you want the trafic to be delayed and relayed to.
 Most likely you want to delay the trafic on your local install so you would set:
-- CB Client: `<ip of eth0>:8000`
-- CB API: `<ip of eth0>:9002`
-- CB IO: `<ip of eth0>:9001`
+- CB Client: `<ip of your machine>:8000`
+- CB API: `<ip of your machine>:9002`
+- CB IO: `<ip of your machine>:9001`
 
 You can get your ip address by typing `hostname -I` to your bash.
 
-In case you want to test against production or lankku you can set:
-- CB API: contriboard.n4sjamk.org / lankku.n4sjamk.org
-- CB IO: contriboard.n4sjamk.org  / lankku.n4sjamk.org
+Now to access your contriboard install go to: `http://localhost:80`
 
-Now to access your contriboard install go to: `http://localhost:8001`
+### API
+You are able to send configuration parameters in `application/json` format to configure the noise container.
+
+#### /limit
+*Method:* PUT
+
+*Parameters:* limit, delay, delayvariance, corrupt, duplicate, loss, reorder, rate
+
+*Usage:* This will set the noise emulation.
+
+*Example:*
+```json
+{
+    "delay": 10,
+    "loss": 5,
+    "corrupt": 1
+}
+```
+
+***
+
+#### /script
+*Method:* PUT
+
+*JSON parameters:* limit, delay, delayvariance, corrupt, duplicate, loss, reorder, rate
+*Other parameters:* loop, jsonscript(of json parameters)
+
+*Usage:* Will start running the defined parameters. This is similar to /limit but with set time delays. 
+
+*Example:*
+In the begining (at 0 seconds) loss will be set to 20% and delay to 5ms. After 5 seconds from the script start loss is set to 10% and delay to 2ms.
+```json
+{
+    "jsonscript": {
+        "0": {
+            "loss": 20,
+            "delay": 5
+        },
+        "5": {
+            "loss": 10,
+            "delay": 2
+        }
+    },
+    "loop": 0
+}
+```
+
+***
+
+#### /limit/reset
+*Method:* PUT
+
+*Usage:* This will reset all delays and settings to 0.
+
+***
+
+#### Parameter description
+*limit*
+(packet amount) Limits the effect of selected options to the indicated number of next packets.
+
+*delay*
+(milliseconds) Delay packet traffic by set amount.
+
+*delayvariance*
+(milliseconds) REQUIRES delay. Optional parameter for delay which introduces a delay variation.
+
+*corrupt*
+(percent) Allows the emulation of random noise introducing an error in a random position for a chosen percent of packets.
+
+*duplicate*
+(percent) Duplicates the chosen percent of packets before queuing them.
+
+*loss*
+(percent) Adds an independent loss probability to the packets outgoing from the chosen network interface.
+
+*reorder*
+(percent) REQUIRES delay. Set percent of packets are sent immediately, while others are delayed by set delay time
+
+*rate*
+(bits) Delay packets based on packet size.
