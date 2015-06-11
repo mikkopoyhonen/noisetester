@@ -12,10 +12,14 @@ This will build a new dockerimage from this repository, remove the old one and s
 To use different set of ports, you can modify the `build_remove_run.sh` file and change the first parts of -p parameter. For example if you want that you can access your contriboard in port 5000 instead of 80, you  can change the `-p 80:8001` to `-p 5300:8001`.
 
 ####Start contriboard with custom enviroment variables
-First make sure that you have started contriboard-api and contriboard-io at your vagrant machine. There is a ready made script called `start_contriboard.sh` in the contriboard-start folder when you cloned the development repository. You can also start the services (io and api) seperated. (Tip: vagrant ssh, npm start)
+First make sure that you have started contriboard-api and contriboard-io at your vagrant machine.
+
+There is a ready made script called `start_services.sh` in the contriboard-start folder when you cloned the development repository. You can also start the `io` and `api` services in separate tabs. (Hint: `vagrant global-status`, `vagrant ssh <id>`, `cd teamboard-io` / `cd teamboard-api` and `npm start` for both)
+
+If you are sure the `io` and `api` services are already running, then you can just:
 
 `sh noise_start_contriboard.sh`
-This will connect to your vagrant via ssh and kill old contriboard nodejs process and start a new one with correct enviroment variables. 
+This will connect to your vagrant machine via ssh and kill old contriboard nodejs process and start a new one with correct enviroment variables. 
 
 _Note: You may need to edit `noise_start_contriboard.sh` in case your network interface is something else than eth0!_
 
