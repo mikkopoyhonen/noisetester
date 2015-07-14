@@ -1,4 +1,4 @@
-# contriboard-noise
+# contriboard-noise-tester
 Noise tester for Contriboard. The tool will generate configurable network condition and so emulate a bad network connection. This repository will build a docker container that will run a small express web server with management gui and api. The docker container also has a haxproxy to redirect trafic.
 
 ####Install docker
