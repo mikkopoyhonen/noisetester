@@ -1,5 +1,14 @@
 # contriboard-noise-tester
-Noise tester for Contriboard. The tool will generate configurable network condition and so emulate a bad network connection. This repository will build a docker container that will run a small express web server with management gui and api. The docker container also has a haxproxy to redirect trafic.
+Contriboard-noise-tester is a highly experimental project made during the `N4S@JAMK Challenge Factory 2015`. 
+This tool is used during the [Contriboard](http://n4sjamk.github.io/contriboard/) development process.
+
+> With contriboard-noise-tester we are able to create a configurable network inside a docker container. That way we are able to simulate different kinds of network conditions such as delay, latency and packetloss.
+
+This repository will build a docker container that will run a small express web server with management gui and api. The docker container also has a haxproxy to redirect trafic.
+
+###How does it work?
+See the following chart to understand the inner workings of the noise-tester.
+![lucidchart](https://www.lucidchart.com/publicSegments/view/55adeaa3-0e14-4bc2-97cb-38b20a008b70/image.png "Contriboard-noise-tester")
 
 ####Install docker
 If you dont yet have docker installed to your machine run:
