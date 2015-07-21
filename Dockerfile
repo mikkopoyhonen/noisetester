@@ -1,6 +1,6 @@
 FROM library/ubuntu:14.04
 
-MAINTAINER Temetz
+MAINTAINER n4sjamk
 
 RUN echo deb http://archive.ubuntu.com/ubuntu trusty-backports main universe > /etc/apt/sources.list.d/backports.list
 RUN apt-get update && apt-get install -y software-properties-common
