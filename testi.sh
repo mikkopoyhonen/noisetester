@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-1sudo yum install -y gcc-c++ make &
+sudo yum install -y gcc-c++ make &
 wait $!
 echo Installed gcc-c++ and make
 sleep 2
@@ -32,8 +32,11 @@ echo entering nodejs workfolder
 cd node
 git checkout v0.12.2
 sudo ./configure
-make
+make &
+wait $!
+
 sudo make install
+
 sudo git clone https://github.com/isaacs/npm.git &
 wait $!
 echo cloned NPM
@@ -47,29 +50,19 @@ cd /etc
 
 echo returned to /etc, now pulling Noise-tester
 
-sudo git clone https://github.com/mikkopoyhonen/noisetester.git &
-wait &!
 
 echo now entering noise-tester workfolder
-cd noisetester/server
+cd /etc/noise-tester
+
 
 sudo make install &
 wait &!
 echo installing noice-tester and enabling services
 
-cd src
+cd /etc/noise-tester/server/src
 
 sudo node index.js
 
 echo 
 
 
-sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-
-sudo service iptables save
-
-sudo service iptables restart
-
-sudo chkconfig pptpd on
-sleep 5
-sudo init6
