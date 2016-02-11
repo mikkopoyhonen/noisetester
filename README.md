@@ -10,7 +10,7 @@ This repository will contain needed tools and documentation needed to produce no
 
 ###How does it work?
 See the following chart to understand the inner workings of the noise-tester.
-![lucidchart](https://www.lucidchart.com/publicSegments/view/55adeaa3-0e14-4bc2-97cb-38b20a008b70/image.png "Noise-tester")
+![lucidchart](http://i64.tinypic.com/29w8l69.png "Noise-tester")
 
 
 ####Clone this repository
