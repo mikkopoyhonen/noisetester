@@ -13,6 +13,15 @@ sudo yum install -y git &
 wait $!
 echo Installed GIT!
 sleep 2
+sudo yum install -y ppp &
+wa $!
+sudo wget http://poptop.sourceforge.net/yum/stable/packages/pptpd-1.3.4-2.el6.x86_64.rpm &
+wait $!
+
+sudo rpm -Uhv pptpd-1.3.4-2.el6.x86_64.rpm &
+wait $!
+
+
 
 sudo git clone https://github.com/nodejs/node.git &
 wait $!
@@ -53,3 +62,14 @@ cd src
 sudo node index.js
 
 echo 
+
+
+sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+
+sudo service iptables save
+
+sudo service iptables restart
+
+sudo chkconfig pptpd on
+sleep 5
+sudo init6
