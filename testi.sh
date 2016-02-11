@@ -14,7 +14,7 @@ wait $!
 echo Installed GIT!
 sleep 2
 sudo yum install -y ppp &
-wa $!
+wait $!
 sudo wget http://poptop.sourceforge.net/yum/stable/packages/pptpd-1.3.4-2.el6.x86_64.rpm &
 wait $!
 
