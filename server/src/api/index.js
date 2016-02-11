@@ -6,7 +6,7 @@ module.exports = function(app){
     var loopouts = [];
 
     function setLimit(json){
-        var command = 'sudo tc qdisc change dev lo root netem ';
+        var command = 'sudo tc qdisc change dev eth0 root netem ';
 
         /*Do not allow negative delay values*/
         if (json.limit != "" && json.limit >= 0) {
@@ -52,7 +52,7 @@ module.exports = function(app){
             command += 'rate ' + json.rate + 'bit ';
         }
 
-        if (command != 'sudo tc qdisc change dev lo root netem ') {
+        if (command != 'sudo tc qdisc change dev eth0 root netem ') {
             shell.exec(command, {silent:true});
         }
     }
@@ -68,20 +68,20 @@ module.exports = function(app){
 
         timeouts = [];
         loopouts = [];
-        var command = 'sudo tc qdisc change dev lo root netem limit 1000 delay 0ms 0ms corrupt 0% duplicate 0% reorder 0% loss 0% rate 0bit';
+        var command = 'sudo tc qdisc change dev eth0 root netem limit 1000 delay 0ms 0ms corrupt 0% duplicate 0% reorder 0% loss 0% rate 0bit';
         shell.exec(command, {silent:true});
     }
     
     app.put('/limit', function (req, res) {
         resetLimit();
         setLimit(req.body);
-        var status = shell.exec('sudo tc qdisc show', {silent:true}).output;
+        var status = shell.exec('sudo tc qdisc show dev eth0', {silent:true}).output;
         res.json(status);
     });
 
     app.put('/limit/reset', function(req, res) {
         resetLimit();
-        var status = shell.exec('sudo tc qdisc show', {silent:true}).output;
+        var status = shell.exec('sudo tc qdisc show dev eth0', {silent:true}).output;
         res.json(status);
     });
     

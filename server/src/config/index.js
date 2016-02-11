@@ -1,3 +1,3 @@
 module.exports = {
-    port: process.env.NOISEPORT || 8003
+    port: process.env.NOISEPORT || 80
 }
