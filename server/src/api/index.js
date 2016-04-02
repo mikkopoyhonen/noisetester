@@ -47,11 +47,6 @@ module.exports = function(app){
             command += 'corrupt ' + json.corrupt + '% ';
         }
 
-        /*Do not allow negative rate values*/
-        if (json.rate != "" && json.rate >= 0) {
-            command += 'rate ' + json.rate + 'bit ';
-        }
-
         if (command != 'sudo tc qdisc change dev eth0 root netem ') {
             shell.exec(command, {silent:true});
         }
